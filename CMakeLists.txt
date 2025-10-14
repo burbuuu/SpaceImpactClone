@@ -4,17 +4,32 @@ project(SpaceImpact CXX)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Find Raylib using pkg-config
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(RAYLIB REQUIRED raylib)
-
-include_directories(${RAYLIB_INCLUDE_DIRS})
-link_directories(${RAYLIB_LIBRARY_DIRS})
-
-# Add source files (adjust this to your structure)
-file(GLOB SOURCES
+# Add source files recursively
+file(GLOB_RECURSE SOURCES
         src/*.cpp
         src/*.h
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+# Create the executable
+add_executable(${PROJECT_NAME} ${SOURCES}
+        src/Game/Player.cpp
+        src/Game/Player.h)
+
+# Include source directory
+target_include_directories(${PROJECT_NAME} PRIVATE
+        ${CMAKE_SOURCE_DIR}/src
+)
+
+# If Raylib is in /usr/local/lib and /usr/local/include
+include_directories(/usr/local/include)
+link_directories(/usr/local/lib)
+
+# Link Raylib and required dependencies
+target_link_libraries(${PROJECT_NAME}
+        raylib
+        m
+        pthread
+        dl
+        rt
+        X11
+)
