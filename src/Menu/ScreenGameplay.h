@@ -2,6 +2,8 @@
 #include <raylib.h>
 
 #include "StateMachineMngr.h"
+#include "Game/Player.h"
+#include "Game/GlobalGameDefines.h"
 
 class ScreenGameplayState : public StateMachineMngr
 {
@@ -38,4 +40,10 @@ private:
 	bool debug_floor = false;
 	bool debug_stairs = false;
 
+	//Background Textures
+	Texture2D landscapeText;
+
+	//Player, enemies and bullets
+	Player player;
+	//TOD
 };

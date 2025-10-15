@@ -16,6 +16,7 @@ public:
     void Update(float deltaTime);
     void Draw();
 
+    inline int GetHealth() { return health; }
     void SetPlayerPosition(Vector2 position);
     void SetPlayerSpeed(Vector2 speed);
     void TakeDamage(int damage);
@@ -29,14 +30,17 @@ private:
 
     //Texture
     Texture2D   playerTexture{};
+    // Collision box
+    Rectangle collisionBox{};
 
     //Sounds
     Sound fxImpact;
     Sound fxShoot;
 
     static constexpr int MAX_HEALTH = 3;
-    static constexpr float SPEED = 1.0f;
+    static constexpr float MAX_SPEED = 300.0f;
 
+    void EvaluateInput();
     void LoadResources();
     void UnloadResources();
 };
