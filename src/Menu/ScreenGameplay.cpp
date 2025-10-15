@@ -80,10 +80,10 @@ int  ScreenGameplayState::FinishScreen(void)
 
 void ScreenGameplayState::EvaluateInput()
 {
-	//Debug audio
+	//DEBUG take damage
 	if (IsKeyPressed(KEY_F)){player.TakeDamage(1);}
 
-	// lete or modify this when the project is more advanced
+	// DEBUG Delete or modify this when the project is more advanced
 	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
 	{
 		finishScreen = 4;   // END SCREEN
