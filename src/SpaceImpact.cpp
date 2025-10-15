@@ -18,7 +18,6 @@
 #include "Game/Managers/GameManager.h"
 
 
-extern const int gravity = 400;
 
 //----------------------------------------------------------------------------------
 // Main entry point
@@ -31,7 +30,7 @@ int main(void)
 
     GameManager & GameMngr = GameManager::GetGameManager();
     GameMngr.InitGame();
-    
+
         SetTargetFPS(60);       // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
@@ -50,7 +49,7 @@ int main(void)
 
     // De-Initialization
     GameManager::GetGameManager().UnloadGame();
-
+    CloseWindow();
     CloseWindow();          // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

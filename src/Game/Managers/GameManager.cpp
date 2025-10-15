@@ -14,6 +14,7 @@
 #include <string.h>             // String manipulation functions: strrchr(), strcmp()
 
 //---------------------------------------------------------------
+//Singleton Pattern
 GameManager* GameManager::GameMngr = nullptr;
 
 
@@ -39,6 +40,9 @@ void GameManager::InitGame()
     // Setup and init first screen
     ScreenState = &ScreenLogoState::getInstance();
     ScreenState->InitScreen();
+
+    //Init audio Device
+    InitAudioDevice();
      
 }
 //-------------------------------------------------------

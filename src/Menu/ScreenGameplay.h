@@ -1,4 +1,6 @@
 #pragma once
+#include <raylib.h>
+
 #include "StateMachineMngr.h"
 
 class ScreenGameplayState : public StateMachineMngr
@@ -22,7 +24,7 @@ public:
 private:
 	ScreenGameplayState();
 	ScreenGameplayState(const ScreenGameplayState& other);
-	ScreenGameplayState& operator= (const ScreenGameplayState& other);
+	ScreenGameplayState& operator = (const ScreenGameplayState& other);
 
 	void EvaluateInput();
 	

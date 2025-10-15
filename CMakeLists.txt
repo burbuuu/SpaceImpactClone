@@ -13,7 +13,10 @@ file(GLOB_RECURSE SOURCES
 # Create the executable
 add_executable(${PROJECT_NAME} ${SOURCES}
         src/Game/Player.cpp
-        src/Game/Player.h)
+        src/Game/Player.h
+        src/Game/Bullet.cpp
+        src/Game/Bullet.h
+)
 
 # Include source directory
 target_include_directories(${PROJECT_NAME} PRIVATE

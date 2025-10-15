@@ -10,11 +10,10 @@ using namespace std;
 class GameManager
 {
 private:
+	//Private constructor for the singleton pattern
 	GameManager();
 
 public:
-	GameManager();
-
 	void InitGame();						// Initialize game
 	void UpdateFrame(float deltaTime);      // Update game (one frame)
 	void DrawFrame(void);                    // Draw game (one frame)

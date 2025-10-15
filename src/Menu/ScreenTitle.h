@@ -1,5 +1,7 @@
 
 #pragma once
+#include <raylib.h>
+
 #include "StateMachineMngr.h"
 #include "Screen.h"
 
@@ -30,4 +32,5 @@ private:
 	int framesCounter = 0;
 	int finishScreen = 0;
 
+	Texture2D textTitle;
 };
