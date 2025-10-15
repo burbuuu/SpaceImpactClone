@@ -97,3 +97,10 @@ void Player::TakeDamage(int damage) {
     PlaySound(fxImpact);
     health -= damage;
 }
+
+void Player::Shoot() {
+	//Shoot sound
+    PlaySound(fxShoot);
+
+	//TODO: Create bullet and add to bullets list
+}
