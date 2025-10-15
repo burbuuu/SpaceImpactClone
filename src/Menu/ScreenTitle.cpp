@@ -1,5 +1,6 @@
 #include "ScreenTitle.h"
 #include "raylib.h"
+#include "Game/GlobalGameDefines.h"
 #include "Game/Managers/GameManager.h"
 
 ScreenTitleState& ScreenTitleState::getInstance()
@@ -18,7 +19,8 @@ void ScreenTitleState::InitScreen(void)
 	// Use this to access to the Game instance
 	GameManager& GameInst = GameManager::GetGameManager();
 
-
+	//Load title texture
+	textTitle = LoadTexture("resources/Menu/MainLogo.png");
 }
 
 void ScreenTitleState::UpdateScreen(float deltaTime)
@@ -43,20 +45,27 @@ void ScreenTitleState::DrawScreen(void)
 
 	GameManager& GameInst = GameManager::GetGameManager();
 
-	float posx = ((GetScreenWidth() / 2.f) - (MeasureText("by Ester A.", 20) / 2.f));
+	float posx = ((GetScreenWidth() / 2.f) - (MeasureText("by Iris G. G.", 20) / 2.f));
 
-	DrawTextEx(GameInst.GetFont(), " by Ester A.", Vector2{ posx, 450.f }, 20, 4, WHITE);
+	DrawTextEx(GameInst.GetFont(), " by Iris G. G.", Vector2{ posx, 450.f }, 20, 4, WHITE);
 
 	DrawText("Press Enter for Playing", (GetScreenWidth() / 2) - (MeasureText("Press Enter for Playing", 25) / 2), 500, 25, WHITE);
 	DrawText("Press 'O' for Instructions", (GetScreenWidth() / 2) - (MeasureText("Press 'O' for Instructions", 25) / 2), 560, 25, WHITE);
 
+	//Draw the title screen
+	//TODO animation
+	DrawTexture(
+		textTitle,
+		GameGlobalVar::screenWidth/2 - textTitle.width/2,
+		    - GameGlobalVar::screenHeight/8 + textTitle.height/2,
+		WHITE);
 
 }
 
 void ScreenTitleState::UnloadScreen(void)
 {
 	GameManager& GameInst = GameManager::GetGameManager();
-
+	UnloadTexture(textTitle);
 }
 
 int ScreenTitleState::FinishScreen(void)
