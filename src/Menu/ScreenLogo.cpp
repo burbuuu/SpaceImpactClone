@@ -32,6 +32,11 @@ void ScreenLogoState::InitScreen(void)
 //-------------------------------------------------------------
 void ScreenLogoState::UpdateScreen(float deltaTime)
 {
+    //Skip animation if any key is pressed
+    if (IsKeyPressed(KEY_SPACE)||IsKeyPressed(KEY_ENTER)) {
+        finishScreen = 1; // Jump to title screen
+    }
+
     if (state == 0)                 // State 0: Top-left square corner blink logic
     {
         framesCounter++;
