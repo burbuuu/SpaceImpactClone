@@ -16,6 +16,8 @@ add_executable(${PROJECT_NAME} ${SOURCES}
         src/Game/Player.h
         src/Game/Bullet.cpp
         src/Game/Bullet.h
+        src/Game/Managers/BulletManager.cpp
+        src/Game/Managers/BulletManager.h
 )
 
 # Include source directory

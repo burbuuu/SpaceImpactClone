@@ -11,16 +11,17 @@
 class Bullet {
 public:
 	Bullet(Vector2 pos);
-    Bullet(Vector2 pos, bool isMovingForward );
+    Bullet(Vector2 pos, bool isPlayerBullet );
 
     void Update(float deltaTime);
     void Draw();
+	inline Vector2 GetPosition() const {return position;}
 
 private:
     Vector2 position;
-    const Vector2 size = Vector2{ 10, 5 };
+    static constexpr Vector2 size = Vector2{ 10, 5 };
 	float speed;
-	const float BULLET_SPEED = 500.0f;
+	static constexpr float BULLET_SPEED = 450.0f;
 
 };
 

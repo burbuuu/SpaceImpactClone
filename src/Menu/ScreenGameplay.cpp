@@ -10,7 +10,7 @@
 #include <string>
 
 
-ScreenGameplayState::ScreenGameplayState(){
+ScreenGameplayState::ScreenGameplayState() : player(playerStartPosition,bulletManager){
 }
 
 ScreenGameplayState& ScreenGameplayState::getInstance()
@@ -38,8 +38,8 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 	//put here all the code for updating in the screen the gameplay
 
 	player.Update(deltaTime);
+	bulletManager.UpdateBullets(deltaTime);
 
-	
 }
 
 void ScreenGameplayState::DrawScreen(void)
@@ -55,9 +55,10 @@ void ScreenGameplayState::DrawScreen(void)
 		GameGlobalVar::screenHeight/2 - landscapeText.height/2,
 		WHITE);
 	player.Draw();
+	bulletManager.DrawBullets();
 
 
-	// UI Score, lives
+	// TODO: UI Score, lives
 
 	Font font = GameInst.GetFont();
 

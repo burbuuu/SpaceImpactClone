@@ -10,13 +10,12 @@
 constexpr float Player::MAX_SPEED;
 constexpr int Player::MAX_HEALTH;
 
-Player::Player() {
-    SetPlayerPosition(Vector2{0.0f, 0.0f});
+Player::Player(Vector2 position, BulletManager& bulletManager) : position(position), bulletManager(bulletManager){
+    SetPlayerPosition(position);
     health = MAX_HEALTH;
     SetPlayerSpeed(Vector2 {0.0f,0.0f});
     LoadResources();
 }
-
 
 Player::~Player() {
     UnloadResources();
@@ -29,7 +28,7 @@ void Player::Update(float deltaTime) {
 
 void Player::Draw() {
     DrawTexture(playerTexture, position.x, position.y, WHITE);
-    //DEBUGGIN draw collider box in top of player
+    //DEBUG draw collider box in top of player
     if (IsKeyDown(KEY_G)) {
         DrawRectangleLines(
         (int)collisionBox.x,
@@ -73,9 +72,11 @@ void Player::EvaluateInput() {
 
     speed = dir * MAX_SPEED;
 
+    // Check for shoot
+    if (IsKeyPressed(KEY_SPACE)) {
+        Shoot();
+    }
 }
-
-
 
 void Player::LoadResources() {
     playerTexture = LoadTexture("resources/Game/Player.png");
@@ -102,5 +103,6 @@ void Player::Shoot() {
 	//Shoot sound
     PlaySound(fxShoot);
 
-	//TODO: Create bullet and add to bullets list
+    //Create a new bullet
+    bulletManager.ShootBullet(position + Player::SHOOT_OFFSET);
 }

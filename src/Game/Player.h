@@ -7,11 +7,12 @@
 #define SPACEIMPACT_PLAYER_H
 #include <raylib.h>
 
+#include "Managers/BulletManager.h"
 
 
 class Player {
 public:
-    Player();
+    Player(Vector2 postion, BulletManager& bullet_manager);
     ~Player();
     void Update(float deltaTime);
     void Draw();
@@ -23,10 +24,12 @@ public:
     void Shoot();
 
 private:
-
-    Vector2 position{};
+    Vector2 position;
     Vector2 speed{};
     int health{};
+
+    //Bullet manager reference
+    BulletManager& bulletManager;
 
     //Texture
     Texture2D   playerTexture{};
@@ -37,8 +40,10 @@ private:
     Sound fxImpact;
     Sound fxShoot;
 
+    // static constants
     static constexpr int MAX_HEALTH = 3;
     static constexpr float MAX_SPEED = 300.0f;
+    const Vector2 SHOOT_OFFSET {105,35}; // Width and half the height of the player texture
 
     void EvaluateInput();
     void LoadResources();
