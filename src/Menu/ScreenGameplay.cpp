@@ -37,7 +37,7 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 
 	//put here all the code for updating in the screen the gameplay
 
-	player.Update(deltaTime);
+	player.Update(deltaTime); // Player input evaluates inside player class
 	bulletManager.UpdateBullets(deltaTime);
 
 }

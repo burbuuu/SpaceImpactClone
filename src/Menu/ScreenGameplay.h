@@ -5,6 +5,7 @@
 #include "Game/Player.h"
 #include "Game/GlobalGameDefines.h"
 #include "Game/Managers/BulletManager.h"
+#include "Game/Managers/EnemyManager.h"
 
 class ScreenGameplayState : public StateMachineMngr
 {
@@ -44,8 +45,9 @@ private:
 	//Background Textures
 	Texture2D landscapeText;
 
-	//Player, enemies and bullets
+	//Player, enemy manager and bullet manager
 	BulletManager bulletManager{};
+	EnemyManager enemyManager{};
 	const Vector2 playerStartPosition {0,GameGlobalVar::screenHeight/2};
 	Player player;
 };
