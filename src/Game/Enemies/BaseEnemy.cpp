@@ -7,6 +7,7 @@
 
 void BaseEnemy::EnemyInit() {
     GenerateRandomSpawnPositions();
+    LoadSound("Sounds/EnemyImpact.mp3");
 }
 
 
@@ -16,6 +17,7 @@ void BaseEnemy::Draw() {
 
 void BaseEnemy::Update(float deltaTime) {
     position.x -= speed *deltaTime;
+
     // TODO: check for hits
 }
 

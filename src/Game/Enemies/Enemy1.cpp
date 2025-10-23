@@ -5,7 +5,11 @@
 #include "Enemy1.h"
 
 void Enemy1::EnemyInit() {
+    BaseEnemy::EnemyInit();
     enemyTexure = LoadTexture("Resources/Game/Enemy1.png");
-    speed = 100;
+    size = Vector2 {100, 50};
+    health = 2;
+    speed = 300;
+    givenScore = 40;
 
 }

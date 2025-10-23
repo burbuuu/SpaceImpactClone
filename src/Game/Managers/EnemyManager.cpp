@@ -4,16 +4,33 @@
 
 #include "EnemyManager.h"
 
-void EnemyManager::UpdateEnemies(float deltaTime) {
+#include <cstdlib>
+
+#include "Game/Enemies/Enemy2.h"
+#include "Game/Enemies/Enemy3.h"
+
+void EnemyManager::Update(float deltaTime) {
+    // Check for new spawns
+    CheckForNewSpawn(deltaTime);
+
     for (int i = 0; i < enemies.size(); i++) {
-        enemies[i].Update(deltaTime);
+        enemies[i]->Update(deltaTime);
     }
     //TODO: Check for deads
 }
 
 void EnemyManager::DrawEnemies() {
     for (int i = 0; i < enemies.size(); i++) {
-        enemies[i].Draw();
+        enemies[i]->Draw();
+    }
+}
+
+void EnemyManager::CheckForNewSpawn(float deltaTime) {
+    //This method updates the spawn clock
+    spawnTimer -= deltaTime;
+
+    if (spawnTimer < 0) {
+        SpawnNewEnemy();
     }
 }
 
@@ -23,7 +40,27 @@ void EnemyManager::DestroyEnemy() {
 }
 
 void EnemyManager::SpawnNewEnemy() {
-    //TODO: spawner
+    // If the boss already spawned don't spawn more enemies
+    if (isBossSpawn) {
+        return;
+    }
+
+    // Throw a die to select a random enemy
+    int dice = rand() % 100;
+    BaseEnemy* newEnemy = nullptr;
+
+    if (dice < 50) {
+        newEnemy = new Enemy1();
+    }else if (dice < 80) {
+        newEnemy = new Enemy2();
+    }else if (dice < 100) {
+        newEnemy = new Enemy3();
+    }
+
+    if (newEnemy!=nullptr) {
+        newEnemy->EnemyInit();
+        enemies.push_back(newEnemy);
+    }
 }
 
 

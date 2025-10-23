@@ -14,7 +14,7 @@ class BaseEnemy {
     void Draw();
     void UnloadEnemy();
     int GetEnemyHealth(){return health;};
-    static const int score;
+
 
 
 protected:
@@ -22,11 +22,13 @@ protected:
 
     int health;
     int speed;
+    int givenScore;
     Sound hitSound;
     Texture2D enemyTexure;
     Vector2 position;
     Vector2 size;
     Rectangle boxCollider;
+
 };
 
 

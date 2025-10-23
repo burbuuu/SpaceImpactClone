@@ -24,6 +24,10 @@ add_executable(${PROJECT_NAME} ${SOURCES}
         src/Game/Enemies/BaseEnemy.h
         src/Game/Enemies/Enemy1.cpp
         src/Game/Enemies/Enemy1.h
+        src/Game/Enemies/Enemy2.cpp
+        src/Game/Enemies/Enemy2.h
+        src/Game/Enemies/Enemy3.cpp
+        src/Game/Enemies/Enemy3.h
 )
 
 # Include source directory

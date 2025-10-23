@@ -7,7 +7,7 @@
 #include "BaseEnemy.h"
 
 
-class Enemy1 : BaseEnemy {
+class Enemy1 : public BaseEnemy{
     public:
     void EnemyInit() override;
 };
