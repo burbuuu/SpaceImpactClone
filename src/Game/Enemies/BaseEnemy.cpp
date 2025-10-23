@@ -5,9 +5,15 @@
 #include "BaseEnemy.h"
 #include "../GlobalGameDefines.h"
 
+BaseEnemy::~BaseEnemy() {
+    UnloadResources();
+}
+
+
 void BaseEnemy::EnemyInit() {
     GenerateRandomSpawnPositions();
-    LoadSound("Sounds/EnemyImpact.mp3");
+    boxCollider = {position.x, position.y,size.x,size.y};
+    LoadSound("resources/Sounds/EnemyImpact.mp3");
 }
 
 
@@ -17,11 +23,11 @@ void BaseEnemy::Draw() {
 
 void BaseEnemy::Update(float deltaTime) {
     position.x -= speed *deltaTime;
-
-    // TODO: check for hits
+    //Update collider position
+    boxCollider.x = position.x;
 }
 
-void BaseEnemy::UnloadEnemy() {
+void BaseEnemy::UnloadResources() {
     UnloadTexture(enemyTexure);
     UnloadSound(hitSound);
 }

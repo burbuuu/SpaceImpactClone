@@ -16,6 +16,7 @@ public:
     void Update(float deltaTime);
     void Draw();
 	inline Vector2 GetPosition() const {return position;}
+	Rectangle GetCollider() const{return Rectangle{position.x,position.y,size.x,size.y};};
 
 private:
     Vector2 position;

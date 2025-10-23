@@ -19,12 +19,13 @@ public:
     void DrawEnemies();
     void SpawnNewEnemy();
     void DestroyEnemy();
+    std::vector<Rectangle> GetColliders() const;
 
 private:
     void CheckForNewSpawn(float deltaTime);
 
     std::vector<BaseEnemy*> enemies;
-    float spawnTimer;
+    float spawnTimer = 1.0;
     const float medianSpawnTime = 0.8;
     bool isBossSpawn = false;
 };

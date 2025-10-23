@@ -9,11 +9,13 @@
 
 class BaseEnemy {
     public:
+    ~BaseEnemy();
     virtual void EnemyInit();
     void Update(float deltaTime);
     void Draw();
-    void UnloadEnemy();
-    int GetEnemyHealth(){return health;};
+    void UnloadResources();
+    int GetEnemyHealth(){return health;}
+    Rectangle GetCollider(){return boxCollider;};
 
 
 

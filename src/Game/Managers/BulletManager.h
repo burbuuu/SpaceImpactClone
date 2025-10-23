@@ -18,6 +18,7 @@ class BulletManager {
     void DrawBullets();
     void ShootBullet(Vector2 position, bool isPlayerBullet);
     void ShootBullet(Vector2 position);
+    std::vector<Rectangle> GetBullets() const;
 
     private:
     std::vector<Bullet> bullets;

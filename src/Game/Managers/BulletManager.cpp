@@ -42,3 +42,12 @@ void BulletManager::ShootBullet(Vector2 position) {
     TraceLog(3,"Bullet manager is registering the shoot.");
     bullets.emplace_back(position);
 }
+
+std::vector<Rectangle> BulletManager::GetBullets() const {
+    std::vector<Rectangle> colliders;
+    for (auto& bullet : bullets) {
+        colliders.push_back(bullet.GetCollider());
+    }
+
+    return colliders;
+}
