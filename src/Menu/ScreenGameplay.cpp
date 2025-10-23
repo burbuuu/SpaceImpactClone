@@ -26,9 +26,6 @@ void ScreenGameplayState::InitScreen(void)
 
 	//Load textures
 	landscapeText = LoadTexture("resources/Game/Landscape.png");
-
-	//Load player and enemy manager
-
 }
 
 void ScreenGameplayState::UpdateScreen(float deltaTime)
@@ -39,6 +36,7 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 
 	player.Update(deltaTime); // Player input evaluates inside player class
 	bulletManager.UpdateBullets(deltaTime);
+	enemyManager.Update(deltaTime);
 
 }
 
@@ -56,7 +54,7 @@ void ScreenGameplayState::DrawScreen(void)
 		WHITE);
 	player.Draw();
 	bulletManager.DrawBullets();
-
+	enemyManager.DrawEnemies();
 
 	// TODO: UI Score, lives
 
@@ -81,8 +79,10 @@ int  ScreenGameplayState::FinishScreen(void)
 
 void ScreenGameplayState::EvaluateInput()
 {
-	//DEBUG take damage
-	if (IsKeyPressed(KEY_F)){player.TakeDamage(1);}
+	//DEBUG take damage buttor
+	if (IsKeyPressed(KEY_F)){
+
+	}
 
 	// DEBUG Delete or modify this when the project is more advanced
 	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
@@ -99,5 +99,33 @@ void ScreenGameplayState::EvaluateInput()
 void ScreenGameplayState::DrawDebug()
 {
 	GameManager& GameInst = GameManager::GetGameManager();
+
+}
+
+void ScreenGameplayState::HandleCollisions() {
+	auto& bullets = bulletManager.GetBullets();
+	auto& enemies = enemyManager.GetEnemies();
+	Rectangle playerCollider = player.GetCollider();
+
+	//Check player vs enemies
+	for (auto* enemy : enemies) {
+		if (CheckCollisionRecs(playerCollider,enemy->GetCollider())) {
+			player.TakeDamage(1);
+			enemyManager.DestroyEnemy(enemy);
+		}
+	}
+
+	//Bullet vs enemies
+	for (auto* enemy : enemies) {
+		for (auto bullet : bullets) {
+			if (CheckCollisionRecs(bullet.GetCollider(), enemy->GetCollider())) {
+				enemy->TakeDamage(1);
+				bulletManager.RemoveBullet(bullet);
+			}
+		}
+	}
+
+	// Check if there are dead enemies:
+
 
 }

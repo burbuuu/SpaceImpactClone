@@ -43,11 +43,11 @@ void BulletManager::ShootBullet(Vector2 position) {
     bullets.emplace_back(position);
 }
 
-std::vector<Rectangle> BulletManager::GetBullets() const {
-    std::vector<Rectangle> colliders;
-    for (auto& bullet : bullets) {
-        colliders.push_back(bullet.GetCollider());
+void BulletManager::RemoveBullet(const Bullet& bullet) {
+    //Remove a bullet from the vector
+    auto it = std::find_if(bullets.begin(), bullets.end(),
+    [&](const Bullet& b) { return &b == &bullet; });
+    if (it != bullets.end()) {
+        bullets.erase(it);
     }
-
-    return colliders;
 }

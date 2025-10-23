@@ -27,6 +27,13 @@ void BaseEnemy::Update(float deltaTime) {
     boxCollider.x = position.x;
 }
 
+void BaseEnemy::TakeDamage(int amount) {
+    //Reduce health and play sound
+    health -= amount;
+    TraceLog(1,"Enemy has been hit");
+    //PlaySound(hitSound);
+}
+
 void BaseEnemy::UnloadResources() {
     UnloadTexture(enemyTexure);
     UnloadSound(hitSound);

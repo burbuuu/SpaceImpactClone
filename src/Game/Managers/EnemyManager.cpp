@@ -4,10 +4,6 @@
 
 #include "EnemyManager.h"
 
-#include <cstdlib>
-
-#include "Game/Enemies/Enemy2.h"
-#include "Game/Enemies/Enemy3.h"
 
 void EnemyManager::Update(float deltaTime) {
     // Check for new spawns
@@ -17,7 +13,7 @@ void EnemyManager::Update(float deltaTime) {
     for (int i = 0; i < enemies.size(); i++) {
         enemies[i]->Update(deltaTime);
     }
-    //TODO: Check for dead enemies
+    //TODO: Check for enemies out of bounds
 }
 
 void EnemyManager::DrawEnemies() {
@@ -37,8 +33,8 @@ void EnemyManager::CheckForNewSpawn(float deltaTime) {
 }
 
 
-void EnemyManager::DestroyEnemy() {
-//TODO: unload enemy and add score
+void EnemyManager::DestroyEnemy(BaseEnemy* enemy) {
+//TODO: destroy the enemy
 }
 
 void EnemyManager::SpawnNewEnemy() {
@@ -63,17 +59,6 @@ void EnemyManager::SpawnNewEnemy() {
         newEnemy->EnemyInit();
         enemies.push_back(newEnemy);
     }
-}
-
-std::vector<Rectangle> EnemyManager::GetColliders() const {
-    std::vector<Rectangle> colliders;
-    colliders.reserve(enemies.size());
-
-    for (auto* enemy:enemies) {
-        colliders.push_back(enemy->GetCollider());
-    }
-
-    return colliders;
 }
 
 

@@ -22,6 +22,7 @@ public:
     void SetPlayerSpeed(Vector2 speed);
     void TakeDamage(int damage);
     void Shoot();
+    Rectangle GetCollider() const {return collisionBox;};
 
 private:
     Vector2 position;

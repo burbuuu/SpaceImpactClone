@@ -50,4 +50,6 @@ private:
 	EnemyManager enemyManager{};
 	const Vector2 playerStartPosition {0,GameGlobalVar::screenHeight/2};
 	Player player;
+
+	void HandleCollisions(void);
 };
