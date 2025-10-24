@@ -4,10 +4,11 @@
 
 #ifndef SPACEIMPACT_ENEMYMANAGER_H
 #define SPACEIMPACT_ENEMYMANAGER_H
+
 #include <vector>
+#include <algorithm>
 
 #include <raylib.h>
-#include <cstdlib>
 #include "Game/Enemies/BaseEnemy.h"
 #include "Game/Enemies/Enemy1.h"
 #include "Game/Enemies/Enemy2.h"
@@ -20,9 +21,11 @@ public:
 
     void Update(float deltaTime);
     void DrawEnemies();
+    void DrawDebug();
     void SpawnNewEnemy();
     void DestroyEnemy(BaseEnemy* enemy);
     std::vector<BaseEnemy*> &GetEnemies() {return enemies;};
+    void ClearEnemies();
 
 private:
     void CheckForNewSpawn(float deltaTime);

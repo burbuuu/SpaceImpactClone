@@ -38,6 +38,8 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 	bulletManager.UpdateBullets(deltaTime);
 	enemyManager.Update(deltaTime);
 
+	HandleCollisions();
+	CheckForDeadEnemies();
 }
 
 void ScreenGameplayState::DrawScreen(void)
@@ -55,6 +57,13 @@ void ScreenGameplayState::DrawScreen(void)
 	player.Draw();
 	bulletManager.DrawBullets();
 	enemyManager.DrawEnemies();
+
+	//Draw debug
+	if (IsKeyDown(KEY_B)) {
+		player.DrawDebug();
+		enemyManager.DrawDebug();
+	}
+
 
 	// TODO: UI Score, lives
 
@@ -109,12 +118,12 @@ void ScreenGameplayState::HandleCollisions() {
 
 	//Check player vs enemies
 	for (auto* enemy : enemies) {
-		if (CheckCollisionRecs(playerCollider,enemy->GetCollider())) {
+		if (CheckCollisionRecs(playerCollider, enemy->GetCollider())) {
+			TraceLog(LOG_INFO, "Player collided with enemy!");
 			player.TakeDamage(1);
 			enemyManager.DestroyEnemy(enemy);
 		}
 	}
-
 	//Bullet vs enemies
 	for (auto* enemy : enemies) {
 		for (auto bullet : bullets) {
@@ -124,8 +133,21 @@ void ScreenGameplayState::HandleCollisions() {
 			}
 		}
 	}
+}
 
-	// Check if there are dead enemies:
+void ScreenGameplayState::CheckForDeadEnemies() {
+	std::vector<BaseEnemy*> enemies = enemyManager.GetEnemies();
+	std::vector<BaseEnemy*> toDestroy;
 
+	//Get dead enemies on a vector for destroying them
+	for (auto* enemy : enemies) {
+		if (enemy->GetHealth() <= 0) {
+			GameManager::GetGameManager().IncreaseScore(enemy->GetScore());
+			toDestroy.push_back(enemy);
+		}
+	}
 
+	for (auto* enemy : toDestroy) {
+		enemyManager.DestroyEnemy(enemy);
+	}
 }

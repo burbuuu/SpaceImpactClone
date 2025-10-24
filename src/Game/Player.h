@@ -15,6 +15,9 @@ public:
     Player(Vector2 postion, BulletManager& bullet_manager);
     ~Player();
     void Update(float deltaTime);
+
+    void DrawDebug();
+
     void Draw();
 
     inline int GetHealth() { return health; }

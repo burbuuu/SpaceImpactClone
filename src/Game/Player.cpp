@@ -26,17 +26,19 @@ void Player::Update(float deltaTime) {
     SetPlayerPosition(position + speed * deltaTime);
 }
 
+void Player::DrawDebug() {
+    //DEBUG draw collider box in top of player
+    DrawRectangleLines(
+            (int)collisionBox.x,
+            (int)collisionBox.y,
+            (int)collisionBox.width,
+            (int)collisionBox.height,
+            RED);
+}
+
 void Player::Draw() {
     DrawTexture(playerTexture, position.x, position.y, WHITE);
-    //DEBUG draw collider box in top of player
-    if (IsKeyDown(KEY_G)) {
-        DrawRectangleLines(
-        (int)collisionBox.x,
-        (int)collisionBox.y,
-        (int)collisionBox.width,
-        (int)collisionBox.height,
-        RED);
-    }
+    //DrawDebug();
 }
 
 void Player::SetPlayerPosition(Vector2 pos) {

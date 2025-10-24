@@ -25,13 +25,16 @@ void BaseEnemy::Update(float deltaTime) {
     position.x -= speed *deltaTime;
     //Update collider position
     boxCollider.x = position.x;
+    boxCollider.y = position.y;
+    boxCollider.width  = size.x;
+    boxCollider.height = size.y;
 }
 
 void BaseEnemy::TakeDamage(int amount) {
     //Reduce health and play sound
     health -= amount;
     TraceLog(1,"Enemy has been hit");
-    //PlaySound(hitSound);
+    PlaySound(hitSound);
 }
 
 void BaseEnemy::UnloadResources() {
@@ -42,5 +45,16 @@ void BaseEnemy::UnloadResources() {
 void  BaseEnemy::GenerateRandomSpawnPositions() {
     position.y = GetRandomValue(GameGlobalVar::gameplayTopBorder, GameGlobalVar::gameplayBottomBorder);
     position.x = GameGlobalVar::gameplayRightBorder + 40;
+}
+
+void BaseEnemy::DrawDebug() {
+    Rectangle collider = GetCollider();
+    DrawRectangleLines(
+        (int) collider.x,
+        (int) collider.y,
+        (int) collider.width,
+        (int) collider.height,
+        RED
+    );
 }
 

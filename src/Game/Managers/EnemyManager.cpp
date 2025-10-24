@@ -4,21 +4,37 @@
 
 #include "EnemyManager.h"
 
+#include "Game/GlobalGameDefines.h"
+
 
 void EnemyManager::Update(float deltaTime) {
     // Check for new spawns
     CheckForNewSpawn(deltaTime);
 
-    //Update each enemy
-    for (int i = 0; i < enemies.size(); i++) {
-        enemies[i]->Update(deltaTime);
+    //Update each enemy and check if they are out of bounds
+    std::vector<BaseEnemy*> toDestroy;
+    for (auto* enemy : enemies) {
+        enemy->Update(deltaTime);
+        if (enemy->GetPosition().x < GameGlobalVar::gameplayLeftBorder - 40) {
+            toDestroy.push_back(enemy);
+        }
     }
-    //TODO: Check for enemies out of bounds
+
+    //Destroy out of bounds enemies
+    for (auto enemy : toDestroy) {
+        DestroyEnemy(enemy);
+    }
 }
 
 void EnemyManager::DrawEnemies() {
     for (int i = 0; i < enemies.size(); i++) {
         enemies[i]->Draw();
+    }
+}
+
+void EnemyManager::DrawDebug() {
+    for (int i = 0; i < enemies.size(); i++) {
+        enemies[i]->DrawDebug();
     }
 }
 
@@ -33,8 +49,12 @@ void EnemyManager::CheckForNewSpawn(float deltaTime) {
 }
 
 
-void EnemyManager::DestroyEnemy(BaseEnemy* enemy) {
-//TODO: destroy the enemy
+void EnemyManager::DestroyEnemy(BaseEnemy *enemy) {
+    auto it = std::find(enemies.begin(), enemies.end(), enemy);
+    if (it != enemies.end()) {
+        delete *it; // free heap memory
+        enemies.erase(it); // remove from vector
+    }
 }
 
 void EnemyManager::SpawnNewEnemy() {
@@ -60,6 +80,13 @@ void EnemyManager::SpawnNewEnemy() {
         enemies.push_back(newEnemy);
     }
 }
+
+void EnemyManager::ClearEnemies() {
+    for (auto enemy: enemies) {
+        DestroyEnemy(enemy);
+    }
+}
+
 
 
 

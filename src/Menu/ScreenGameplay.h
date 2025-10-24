@@ -52,4 +52,6 @@ private:
 	Player player;
 
 	void HandleCollisions(void);
+
+	void CheckForDeadEnemies();
 };

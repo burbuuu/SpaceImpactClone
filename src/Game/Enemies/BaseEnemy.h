@@ -9,14 +9,18 @@
 
 class BaseEnemy {
 public:
-    ~BaseEnemy();
+    virtual ~BaseEnemy();
     virtual void EnemyInit();
     void Update(float deltaTime);
     void Draw();
     void UnloadResources();
-    int GetEnemyHealth(){return health;}
+    int GetHealth(){return health;}
+    int GetScore(){return givenScore;}
     virtual void TakeDamage(int amount);
+    Vector2 GetPosition(){return position;}
+
     Rectangle GetCollider(){return boxCollider;};
+    void DrawDebug();
 
 
 
