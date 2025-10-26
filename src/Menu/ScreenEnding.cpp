@@ -39,14 +39,31 @@ void ScreenEndingState::DrawScreen(void)
 
 	Font font = GameInst.GetFont();
 
-	// Write this in case of win
-	DrawTextEx(font, "GAME OVER", Vector2{ (GetScreenWidth() / 2.f) - 150, (GetScreenHeight() / 2.f) -150 }, font.baseSize * 2.0f, 1, RED);
+	// Win/Lose status
+	if (GameInst.IsGameOver()) {
+		DrawText("GAME OVER",
+			(GetScreenWidth() / 2.f) - (MeasureText("GAME OVER", 25) / 2),
+			(GetScreenHeight() / 2.f) - 100, 25, RED);
+	} else {
+		DrawText("YOU WIN",
+			(GetScreenWidth() / 2.f) - (MeasureText("YOU WIN", 25) / 2),
+			(GetScreenHeight() / 2.f) - 100 , 25, WHITE);
+	}
 
-	DrawTextEx(font, "YOU WIN!", Vector2{ (GetScreenWidth() / 2.f) - 150, (GetScreenHeight() / 2.f) - 150 }, font.baseSize * 2.0f, 1, WHITE);
+	// Score
+	std::string scoreText = "SCORE: " + std::to_string(GameInst.GetScore());
+	DrawText(scoreText.c_str(),
+		(GetScreenWidth() / 2.f) - (MeasureText(scoreText.c_str(), 25) / 2),
+		(GetScreenHeight() / 2.f) - 50, 25, WHITE);
 
-	DrawText("Press Enter for Playing", (GetScreenWidth() / 2.f) - (MeasureText("Press Enter for Playing", 25) / 2), (GetScreenHeight() / 2.f) + 50, 25, WHITE);
-	DrawText("Press 'O' for Options", (GetScreenWidth() / 2.f) - (MeasureText("Press 'I' for Instructions", 25) / 2), (GetScreenHeight() / 2.f) + 100, 25, WHITE);
+	// UI options
+	DrawText("Press Enter for Playing",
+		(GetScreenWidth() / 2.f) - (MeasureText("Press Enter for Playing", 25) / 2),
+		(GetScreenHeight() / 2.f) + 50, 25, WHITE);
 
+	DrawText("Press 'O' for Instructions",
+		(GetScreenWidth() / 2.f) - (MeasureText("Press 'O' for Instructions", 25) / 2),
+		(GetScreenHeight() / 2.f) + 100, 25, WHITE);
 }
 
 void ScreenEndingState::UnloadScreen(void)

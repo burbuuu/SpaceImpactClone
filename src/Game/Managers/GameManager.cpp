@@ -161,10 +161,6 @@ void GameManager::UnloadGame(void)
 
     ClearGameVar();
 
-    // Unload global data loaded
-    UnloadMusicStream(music);
-    UnloadSound(fxCoin);
-
     CloseAudioDevice();     // Close audio context
 }
 
@@ -239,8 +235,8 @@ void GameManager::ClearGameVar()
 {
     score = 0;
     seconds = 0;
-    
 
+    gameOver = false;
 }
 
 

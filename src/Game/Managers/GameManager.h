@@ -32,6 +32,8 @@ public:
 	void IncreaseScore(int newValue) { score += newValue; }
 	void DecreaseScore(int newValue) { score -= newValue; }
 
+	void SetGameOver(bool newValue) { gameOver = newValue; }
+	bool IsGameOver() { return gameOver; }
 
 	static GameManager& GetGameManager();
 
@@ -54,6 +56,8 @@ private:
 	int score = 0;
 	int seconds = 0;
 
+	bool gameOver = false;
+
 private:
 
 	static GameManager *GameMngr;
@@ -61,8 +65,6 @@ private:
 	//------------
 
 	Font font = { 0 };
-	Music music = { 0 };
-	Sound fxCoin = { 0 };
 
 	StateMachineMngr* ScreenState;
 

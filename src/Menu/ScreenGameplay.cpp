@@ -37,7 +37,7 @@ void ScreenGameplayState::InitScreen(void)
 	enemyManager.Init();
 
 	//Reset boss spawn timer
-	bossSpawnTimer = 30.0f;
+	bossSpawnTimer = BOSS_SPAWN_DELAY;
 	isBossSpawn = false;
 	isBossDefeated = false;
 
@@ -45,10 +45,9 @@ void ScreenGameplayState::InitScreen(void)
 
 void ScreenGameplayState::UpdateScreen(float deltaTime)
 {
-	EvaluateInput();
-
-
+	//Player input movement is evaluated inside player.Update
 	player.Update(deltaTime); // Player input evaluates inside player class
+
 	bulletManager.UpdateBullets(deltaTime);
 	enemyManager.Update(deltaTime);
 	CheckForBossSpawns(deltaTime);
@@ -81,8 +80,6 @@ void ScreenGameplayState::DrawScreen(void)
 
 	// UI Score and lives
 
-	Font font = GameInst.GetFont();
-
 	DrawText("SCORE:", 600.f, 100.f, 25, WHITE);
 	DrawText(to_string(GameInst.GetScore()).c_str(), 740.f, 100.f, 25, WHITE);
 
@@ -103,6 +100,8 @@ int  ScreenGameplayState::FinishScreen(void)
 {
 	// Player dead
 	if (player.GetHealth() <= 0) {
+		//Set game over as true
+		GameManager::GetGameManager().SetGameOver(true);
 		finishScreen = (int)ScreenState::ENDING;
 	}
 
@@ -112,16 +111,6 @@ int  ScreenGameplayState::FinishScreen(void)
 	}
 
 	return finishScreen;
-}
-
-void ScreenGameplayState::EvaluateInput()
-{
-
-	// DEBUG Delete or modify this when the project is more advanced
-	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
-	{
-		finishScreen = 4;   // END SCREEN
-	}
 }
 
 void ScreenGameplayState::HandleCollisions() {

@@ -56,13 +56,7 @@ void EnemyManager::CheckForNewSpawn(float deltaTime) {
 }
 
 
-void EnemyManager::DestroyEnemy(BaseEnemy *enemy) {
-    auto it = std::find(enemies.begin(), enemies.end(), enemy);
-    if (it != enemies.end()) {
-        delete *it; // free heap memory
-        enemies.erase(it); // remove from vector
-    }
-}
+
 
 void EnemyManager::SpawnNewEnemy() {
     // If the boss already spawned don't spawn more enemies
@@ -103,6 +97,19 @@ void EnemyManager::SpawnBoss(BulletManager &bulletManager) {
 void EnemyManager::ClearEnemies() {
     for (auto enemy: enemies) {
         enemy->UnloadResources();
-        DestroyEnemy(enemy);
+        delete enemy;
+    }
+    enemies.clear();
+}
+
+void EnemyManager::DestroyEnemy(BaseEnemy *enemy) {
+    auto it = std::find(enemies.begin(), enemies.end(), enemy);
+    if (it != enemies.end()) {
+        //Unload resources
+        (*it)->UnloadResources();
+
+        delete *it; // free heap memory
+
+        enemies.erase(it); // remove from vector
     }
 }

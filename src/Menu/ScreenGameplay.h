@@ -33,8 +33,6 @@ private:
 	ScreenGameplayState(const ScreenGameplayState& other);
 	ScreenGameplayState& operator = (const ScreenGameplayState& other);
 
-	void EvaluateInput();
-
 	int framesCounter = 0;
 	int finishScreen = 0;
 
@@ -51,7 +49,9 @@ private:
 	BulletManager bulletManager{};
 	EnemyManager enemyManager{};
 	Player player;
-	bool isBossDefeated;
+
+
+
 
 	//Enemy methods
 	void HandleCollisions(void);
@@ -59,6 +59,8 @@ private:
 
 	//Boss
 	bool isBossSpawn = false;
+	bool isBossDefeated;
 	float bossSpawnTimer;
+	float const BOSS_SPAWN_DELAY = 20.0f;
 	void CheckForBossSpawns(float deltaTime);
 };

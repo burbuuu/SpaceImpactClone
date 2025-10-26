@@ -15,6 +15,7 @@ namespace GameGlobalVar
 	constexpr int gameplayTopBorder = 140;
 	constexpr int gameplayBottomBorder = screenHeight - 160;
 
+
 	#define GREENLIGHT CLITERAL(Color){ 170, 214, 156, 255 }
 }
 

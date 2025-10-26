@@ -6,8 +6,6 @@
 #include "../GlobalGameDefines.h"
 
 
-
-
 void BaseEnemy::EnemyInit() {
     GenerateRandomSpawnPositions();
     boxCollider = {position.x, position.y,size.x,size.y};
