@@ -21,6 +21,9 @@ ScreenGameplayState& ScreenGameplayState::getInstance()
 
 void ScreenGameplayState::InitScreen(void)
 {
+	//Clear game variables
+	GameManager::GetGameManager().ClearGameVar();
+
 	framesCounter = 0;
 	finishScreen = 0;
 
