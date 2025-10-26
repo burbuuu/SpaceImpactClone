@@ -10,20 +10,30 @@
 constexpr float Player::MAX_SPEED;
 constexpr int Player::MAX_HEALTH;
 
-Player::Player(Vector2 position, BulletManager& bulletManager) : position(position), bulletManager(bulletManager){
-    SetPlayerPosition(position);
+Player::Player(BulletManager& bulletManager) : bulletManager(bulletManager){
+
+}
+
+void Player::InitPlayer() {
+    SetPlayerPosition(START_POSITION);
     health = MAX_HEALTH;
     SetPlayerSpeed(Vector2 {0.0f,0.0f});
     LoadResources();
-}
-
-Player::~Player() {
-    UnloadResources();
+    shootTimer = 0.0f;
+    invulnerabilityTimer = 0.0f;
 }
 
 void Player::Update(float deltaTime) {
     EvaluateInput();
     SetPlayerPosition(position + speed * deltaTime);
+    //Update shoot timer
+    if (shootTimer > 0.0f) {
+        shootTimer -= deltaTime; // When the timer is <= 0 player can shoot
+    }
+    //Update invulnerability time
+    if (invulnerabilityTimer > 0.0f) {
+        invulnerabilityTimer -= deltaTime;
+    }
 }
 
 void Player::DrawDebug() {
@@ -96,15 +106,30 @@ void Player::UnloadResources() {
 }
 
 void Player::TakeDamage(int damage) {
+    //If player is invulnerable don't take damage
+    if (invulnerabilityTimer > 0) {
+        return;
+    }
+
     //Play sound and reduce health
     PlaySound(fxImpact);
     health -= damage;
+
+    // Reset invulnerability timer
+    invulnerabilityTimer = invulnerabilityDuration;
 }
 
 void Player::Shoot() {
+    if (shootTimer>0) {
+        return;
+    }
+
 	//Shoot sound
     PlaySound(fxShoot);
 
     //Create a new bullet
     bulletManager.ShootBullet(position + Player::SHOOT_OFFSET);
+
+    //Restart timer
+    shootTimer = SHOOT_TIME;
 }

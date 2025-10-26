@@ -31,11 +31,11 @@ void ScreenOptionsState::DrawScreen(void)
 {
     DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
 
-    const char* line1 = "To move PACMAN use the direction keys or A,D,W,S.";
-    const char* line2 = "PACMAN has 3 lifes, every dot eaten increases 10 points";
-    const char* line3 = "the big dots adds 50 points to the score.";
-    const char* line4 = "To win PACMAN has to eat all the dots";
-    const char* line5 = "You loose if the ghost SHADOW kills you 3 times.";
+    const char* line1 = "Use A,D,W,S. or the ARROWS to move the ship.";
+	const char* line2 = "Use the SPACEBAR to shoot.";
+    const char* line3 = "Avoid getting hit.";
+    const char* line4 = "Kill the boss to win.";
+    const char* line5 = "Good luck!!";
     
 
     DrawText(line1, (GetScreenWidth() / 2) - (MeasureText(line1, 20) / 2.), 150, 20, WHITE);

@@ -7,6 +7,7 @@
 
 #include <raylib.h>
 #include <vector>
+#include <algorithm>
 #include "../Bullet.h"
 
 
@@ -18,8 +19,8 @@ class BulletManager {
     void DrawBullets();
     void ShootBullet(Vector2 position, bool isPlayerBullet);
     void ShootBullet(Vector2 position);
-    const std::vector<Bullet>& GetBullets() const { return bullets; }
-    void RemoveBullet(const Bullet& bullet);
+    std::vector<Bullet>& GetBullets() { return bullets; }
+    void RemoveBullet(Bullet& bullet);
 
     private:
     std::vector<Bullet> bullets;

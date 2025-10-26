@@ -4,8 +4,11 @@
 #include "StateMachineMngr.h"
 #include "Game/Player.h"
 #include "Game/GlobalGameDefines.h"
+#include "Game/Enemies/BaseEnemy.h"
+#include "Game/Enemies/Boss.h"
 #include "Game/Managers/BulletManager.h"
 #include "Game/Managers/EnemyManager.h"
+#include "Game/UI/HealthContainer.h"
 
 class ScreenGameplayState : public StateMachineMngr
 {
@@ -31,27 +34,31 @@ private:
 	ScreenGameplayState& operator = (const ScreenGameplayState& other);
 
 	void EvaluateInput();
-	
-	void DebugOptions();
-	void DrawDebug();
 
 	int framesCounter = 0;
 	int finishScreen = 0;
-	bool mb_ReplayLevel = false;
-
-	bool debug_floor = false;
-	bool debug_stairs = false;
 
 	//Background Textures
 	Texture2D landscapeText;
 
+	//Sounds
+	Sound fxStart;
+
+	//UI
+	HealthContainer healthContainer{};
+
 	//Player, enemy manager and bullet manager
 	BulletManager bulletManager{};
 	EnemyManager enemyManager{};
-	const Vector2 playerStartPosition {0,GameGlobalVar::screenHeight/2};
 	Player player;
+	bool isBossDefeated;
 
+	//Enemy methods
 	void HandleCollisions(void);
-
 	void CheckForDeadEnemies();
+
+	//Boss
+	bool isBossSpawn = false;
+	float bossSpawnTimer;
+	void CheckForBossSpawns(float deltaTime);
 };

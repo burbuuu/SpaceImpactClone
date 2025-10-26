@@ -49,7 +49,6 @@ int main(void)
 
     // De-Initialization
     GameManager::GetGameManager().UnloadGame();
-    CloseWindow();
     CloseWindow();          // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

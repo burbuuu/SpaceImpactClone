@@ -7,9 +7,10 @@
 
 void Enemy3::EnemyInit() {
     BaseEnemy::EnemyInit();
+    type = REGULAR;
     enemyTexure = LoadTexture("resources/Game/Enemy3.png");
     size = Vector2 {88, 50};
     health = 3;
-    speed = 350;
+    speed = 300;
     givenScore = 60;
 }

@@ -34,20 +34,17 @@ void BulletManager::DrawBullets() {
 }
 
 void BulletManager::ShootBullet(Vector2 position, bool isPlayerBullet) {
-    TraceLog(3,"Bullet manager is registering the shoot.");
     bullets.emplace_back(position, isPlayerBullet);
 }
 
 void BulletManager::ShootBullet(Vector2 position) {
-    TraceLog(3,"Bullet manager is registering the shoot.");
     bullets.emplace_back(position);
 }
 
-void BulletManager::RemoveBullet(const Bullet& bullet) {
-    //Remove a bullet from the vector
-    auto it = std::find_if(bullets.begin(), bullets.end(),
-    [&](const Bullet& b) { return &b == &bullet; });
-    if (it != bullets.end()) {
-        bullets.erase(it);
-    }
+void BulletManager::RemoveBullet(Bullet& bullet) {
+    bullets.erase(
+        std::remove_if(bullets.begin(), bullets.end(),
+            [&](const Bullet& b) { return &b == &bullet; }),
+        bullets.end()
+    );
 }

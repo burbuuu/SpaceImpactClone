@@ -35,7 +35,7 @@ void GameManager::InitGame()
 {
 
     // Load global data (assets that must be available in all screens, i.e. font)
-    font = LoadFont("resources/Font/PacManFont.ttf");
+    font = GetFontDefault();
 
     // Setup and init first screen
     ScreenState = &ScreenLogoState::getInstance();
@@ -117,7 +117,7 @@ void GameManager::UpdateFrame(float deltaTime)
                     else if (InputKey == 1)
                     {
                         //update here the game for perform the restart
-
+                        ClearGameVar();
                         TransitionToScreen((int)ScreenState::TITLE);
                         ScreenState = &ScreenTitleState::getInstance();
                     }
@@ -162,7 +162,6 @@ void GameManager::UnloadGame(void)
     ClearGameVar();
 
     // Unload global data loaded
-    UnloadFont(font);
     UnloadMusicStream(music);
     UnloadSound(fxCoin);
 

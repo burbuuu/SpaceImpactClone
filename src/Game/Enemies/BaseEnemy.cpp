@@ -5,15 +5,13 @@
 #include "BaseEnemy.h"
 #include "../GlobalGameDefines.h"
 
-BaseEnemy::~BaseEnemy() {
-    UnloadResources();
-}
+
 
 
 void BaseEnemy::EnemyInit() {
     GenerateRandomSpawnPositions();
     boxCollider = {position.x, position.y,size.x,size.y};
-    LoadSound("resources/Sounds/EnemyImpact.mp3");
+    hitSound = LoadSound("resources/Sounds/EnemyImpact.mp3");
 }
 
 

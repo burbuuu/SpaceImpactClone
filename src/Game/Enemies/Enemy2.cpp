@@ -6,6 +6,7 @@
 
 void Enemy2::EnemyInit() {
     BaseEnemy::EnemyInit();
+    type = REGULAR;
     enemyTexure = LoadTexture("resources/Game/Enemy2.png");
     size = Vector2 {60, 69};
     health = 2;

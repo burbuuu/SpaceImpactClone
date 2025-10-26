@@ -10,7 +10,7 @@
 #include <string>
 
 
-ScreenGameplayState::ScreenGameplayState() : player(playerStartPosition,bulletManager){
+ScreenGameplayState::ScreenGameplayState() : player(bulletManager){
 }
 
 ScreenGameplayState& ScreenGameplayState::getInstance()
@@ -24,19 +24,34 @@ void ScreenGameplayState::InitScreen(void)
 	framesCounter = 0;
 	finishScreen = 0;
 
-	//Load textures
+	//Load textures and sounds
 	landscapeText = LoadTexture("resources/Game/Landscape.png");
+	fxStart = LoadSound("resources/Sounds/StartGame.mp3");
+	PlaySound(fxStart);
+
+	//UI
+	healthContainer.Init();
+
+	//Reset player anb managers
+	player.InitPlayer();
+	enemyManager.Init();
+
+	//Reset boss spawn timer
+	bossSpawnTimer = 30.0f;
+	isBossSpawn = false;
+	isBossDefeated = false;
+
 }
 
 void ScreenGameplayState::UpdateScreen(float deltaTime)
 {
 	EvaluateInput();
 
-	//put here all the code for updating in the screen the gameplay
 
 	player.Update(deltaTime); // Player input evaluates inside player class
 	bulletManager.UpdateBullets(deltaTime);
 	enemyManager.Update(deltaTime);
+	CheckForBossSpawns(deltaTime);
 
 	HandleCollisions();
 	CheckForDeadEnemies();
@@ -44,16 +59,15 @@ void ScreenGameplayState::UpdateScreen(float deltaTime)
 
 void ScreenGameplayState::DrawScreen(void)
 {
-
 	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), BLACK);
 
 	GameManager& GameInst = GameManager::GetGameManager();
 
-	//put here all the code for drawing in the screen the gameplay
 	DrawTexture(landscapeText,
 		GameGlobalVar::screenWidth/2 - landscapeText.width/2,
 		GameGlobalVar::screenHeight/2 - landscapeText.height/2,
 		WHITE);
+
 	player.Draw();
 	bulletManager.DrawBullets();
 	enemyManager.DrawEnemies();
@@ -65,50 +79,49 @@ void ScreenGameplayState::DrawScreen(void)
 	}
 
 
-	// TODO: UI Score, lives
+	// UI Score and lives
 
 	Font font = GameInst.GetFont();
 
-	DrawText("SCORE:", 300.f, 100.f, 25, WHITE);
-	DrawText(to_string(GameInst.GetScore()).c_str(), 440.f, 100.f, 25, WHITE);
+	DrawText("SCORE:", 600.f, 100.f, 25, WHITE);
+	DrawText(to_string(GameInst.GetScore()).c_str(), 740.f, 100.f, 25, WHITE);
+
+	// Draw players lives
+	healthContainer.Draw(player.GetHealth());
 }
 
 void ScreenGameplayState::UnloadScreen(void)
 {
 	UnloadTexture(landscapeText);
+	UnloadSound(fxStart);
+	healthContainer.Unload();
+	enemyManager.ClearEnemies(); // This destroys unloads their resources and then destroys all enemies
+	player.UnloadResources();
 }
 
 int  ScreenGameplayState::FinishScreen(void)
 {
+	// Player dead
 	if (player.GetHealth() <= 0) {
-		finishScreen = 4;
+		finishScreen = (int)ScreenState::ENDING;
 	}
+
+	// Boss defeated
+	if (isBossDefeated) {
+		finishScreen = (int)ScreenState::ENDING;
+	}
+
 	return finishScreen;
 }
 
 void ScreenGameplayState::EvaluateInput()
 {
-	//DEBUG take damage buttor
-	if (IsKeyPressed(KEY_F)){
-
-	}
 
 	// DEBUG Delete or modify this when the project is more advanced
 	if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
 	{
 		finishScreen = 4;   // END SCREEN
 	}
-}
-
-	void ScreenGameplayState::DebugOptions()
-{
-
-}
-
-void ScreenGameplayState::DrawDebug()
-{
-	GameManager& GameInst = GameManager::GetGameManager();
-
 }
 
 void ScreenGameplayState::HandleCollisions() {
@@ -119,18 +132,40 @@ void ScreenGameplayState::HandleCollisions() {
 	//Check player vs enemies
 	for (auto* enemy : enemies) {
 		if (CheckCollisionRecs(playerCollider, enemy->GetCollider())) {
-			TraceLog(LOG_INFO, "Player collided with enemy!");
-			player.TakeDamage(1);
-			enemyManager.DestroyEnemy(enemy);
+
+			//If player is not invulnerable take damage
+			if (!player.IsPlayerInvulnerable()) {
+				player.TakeDamage(1);
+
+				//Destroy enemy if it's a regular enemy, but this is not intended for the boss
+				if (enemy->GetEnemyType() == EnemyType::REGULAR) {
+					enemyManager.DestroyEnemy(enemy);
+				}
+			}
 		}
 	}
+
 	//Bullet vs enemies
 	for (auto* enemy : enemies) {
-		for (auto bullet : bullets) {
-			if (CheckCollisionRecs(bullet.GetCollider(), enemy->GetCollider())) {
+		for (auto it = bullets.begin(); it != bullets.end(); ) {
+			if (CheckCollisionRecs(it->GetCollider(), enemy->GetCollider())) {
 				enemy->TakeDamage(1);
-				bulletManager.RemoveBullet(bullet);
+				//Remove the bullet if the enemy is hit
+				it = bullets.erase(it);
+			} else {
+				++it;
 			}
+		}
+	}
+
+	// Bullet vs player
+	for (auto it = bullets.begin(); it != bullets.end();) {
+		if (CheckCollisionRecs(it->GetCollider(), playerCollider)) {
+			player.TakeDamage(1);
+			//Remove bullet if the player is hit
+			it = bullets.erase(it);
+		} else {
+			++it;
 		}
 	}
 }
@@ -143,6 +178,11 @@ void ScreenGameplayState::CheckForDeadEnemies() {
 	for (auto* enemy : enemies) {
 		if (enemy->GetHealth() <= 0) {
 			GameManager::GetGameManager().IncreaseScore(enemy->GetScore());
+
+			//Check if the defeated enemy is the boss
+			if (enemy->GetEnemyType() == EnemyType::BOSS) {
+				isBossDefeated = true;
+			}
 			toDestroy.push_back(enemy);
 		}
 	}
@@ -150,4 +190,15 @@ void ScreenGameplayState::CheckForDeadEnemies() {
 	for (auto* enemy : toDestroy) {
 		enemyManager.DestroyEnemy(enemy);
 	}
+}
+
+void ScreenGameplayState::CheckForBossSpawns(float deltaTime) {
+		// Update boss timer
+		bossSpawnTimer -= deltaTime;
+
+		if (bossSpawnTimer <= 0.0f && !isBossSpawn) {
+			isBossSpawn = true;
+			enemyManager.SpawnBoss(bulletManager);
+		}
+
 }

@@ -6,12 +6,15 @@
 #define SPACEIMPACT_ENEMY_H
 #include <raylib.h>
 
+enum EnemyType {
+    REGULAR = 0,
+    BOSS = 1
+};
 
 class BaseEnemy {
 public:
-    virtual ~BaseEnemy();
     virtual void EnemyInit();
-    void Update(float deltaTime);
+    virtual void Update(float deltaTime);
     void Draw();
     void UnloadResources();
     int GetHealth(){return health;}
@@ -21,11 +24,13 @@ public:
 
     Rectangle GetCollider(){return boxCollider;};
     void DrawDebug();
+    EnemyType GetEnemyType() {return type;}
 
 
 
 protected:
     void GenerateRandomSpawnPositions();
+    EnemyType type;
 
     int health;
     int speed;

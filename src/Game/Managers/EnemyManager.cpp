@@ -5,6 +5,13 @@
 #include "EnemyManager.h"
 
 #include "Game/GlobalGameDefines.h"
+#include "Game/Enemies/Boss.h"
+
+void EnemyManager::Init() {
+    //Reset boss data
+    isBossSpawn = false;
+    ClearEnemies();
+}
 
 
 void EnemyManager::Update(float deltaTime) {
@@ -81,18 +88,21 @@ void EnemyManager::SpawnNewEnemy() {
     }
 }
 
-void EnemyManager::ClearEnemies() {
-    for (auto enemy: enemies) {
-        DestroyEnemy(enemy);
+void EnemyManager::SpawnBoss(BulletManager &bulletManager) {
+    boss = new Boss(bulletManager);
+
+    if (boss != nullptr) {
+        boss->EnemyInit();
+        enemies.push_back(boss);
+        isBossSpawn = true;
+    } else {
+        TraceLog(1,"Boss failed to be instantiated.");
     }
 }
 
-
-
-
-
-
-
-
-
-
+void EnemyManager::ClearEnemies() {
+    for (auto enemy: enemies) {
+        enemy->UnloadResources();
+        DestroyEnemy(enemy);
+    }
+}
